@@ -81,5 +81,4 @@ def write_to_file(file_chunks: list = None, target_file: str = None):
             for sentence in chunk:
                 output_file.write("{}\n".format(sentence))
 
-            if i < len(file_chunks):
-                output_file.write("\n")
+            output_file.write("\n")
