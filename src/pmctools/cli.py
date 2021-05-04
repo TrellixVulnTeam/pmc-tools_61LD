@@ -8,6 +8,7 @@ import tarfile
 import click
 
 from pmctools.data import process_corpus
+from pmctools.regroup import split_corpus_in_chunk
 
 
 @click.group()
@@ -65,6 +66,43 @@ def uncompress_cli(input_dir: str, output_dir: str):
 
         with tarfile.open(tar_filepath) as input_file:
             input_file.extractall(path=output_dir)
+
+
+@cli.command("REGROUP")
+@click.option("--input-dir", help="segmented corpus directory", required=True, type=str)
+@click.option(
+    "--output-dir",
+    help="Directory where compressed files will be created",
+    required=True,
+    type=str,
+)
+@click.option(
+    "--n-jobs",
+    help="Number of parallel processes that must be used",
+    required=False,
+    type=int,
+    default=1,
+    show_default=True,
+)
+def cli_regroup(input_dir: str, output_dir: str, n_jobs: int):
+
+    input_dir = os.path.abspath(input_dir)
+    output_dir = os.path.abspath(output_dir)
+
+    if not os.path.isdir(input_dir):
+        raise NotADirectoryError("The input directory does not exist")
+
+    if os.path.isdir(output_dir):
+        click.confirm(
+            "The output directory already exists. Do you want to overwrite?",
+            abort=True,
+        )
+        click.echo("Overwriting output directory: {}".format(output_dir))
+        shutil.rmtree(output_dir)
+
+    os.makedirs(output_dir)
+
+    split_corpus_in_chunk(corpus_dir=input_dir, target_dir=output_dir, n_jobs=n_jobs)
 
 
 @cli.command("LM")
