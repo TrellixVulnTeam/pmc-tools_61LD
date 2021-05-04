@@ -4,20 +4,27 @@ version = "0.1.0"
 description = ""
 authors = ["Julien Tourille <julien.tourille@gmail.com>"]
 license = "MIT"
+packages = [
+    { include = "pmctools", from = "src" }
+]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-pubmed-parser = {git = "https://github.com/titipata/pubmed_parser.git"}
+python = "^3.8"
 spacy = "^3.0.5"
 scispacy = "^0.4.0"
-en-core-sci-lg = {url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.4.0/en_core_sci_lg-0.4.0.tar.gz"}
+pubmed-parser = {git = "https://github.com/titipata/pubmed_parser.git", rev = "ee0fce583cf111b71430660e743fd0d72acd68ed"}
+click = "^7.1.2"
+joblib = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
-jupyterlab = "^3.0.12"
 flake8 = "^3.9.0"
 black = "^20.8b1"
 pre-commit = "^2.12.0"
 isort = "^5.8.0"
+jupyterlab = "^3.0.13"
+
+[tool.poetry.scripts]
+pmc = 'pmctools.cli:cli'
 
 [tool.isort]
 multi_line_output = 3
@@ -29,7 +36,7 @@ line_length = 88
 
 [tool.black]
 line-length = 88
-target-version = ['py39']
+target-version = ['py38']
 include = '\.pyi?$'
 exclude = '''
 /(
