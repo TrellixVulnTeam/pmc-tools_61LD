@@ -16,8 +16,11 @@ def analyse_text_chunks(text_chunks: list = None, nlp: Language = None):
         doc = nlp(chunk)
 
         for sent in doc.sents:
-            chunk_sentences.append(str(sent))
+            sent_str = str(sent).strip("\n \t")
+            if len(sent_str) > 0:
+                chunk_sentences.append(sent_str)
 
-        all_parts.append(chunk_sentences)
+        if len(chunk_sentences) > 0:
+            all_parts.append(chunk_sentences)
 
     return all_parts, skipped_chunks
